@@ -1,9 +1,9 @@
-var net= require('net')
+var reconnect= require('./reconnect-tcp')
 var util = require('util')
 
 function Client(options) {
 
-  var queue = {}, client, id
+  var queue = {}, client, re, id
 
   var defaults = {
     host: '127.0.0.1',
@@ -32,21 +32,28 @@ function Client(options) {
   }
 
   function createClient() {
-    client = net.createConnection(options)
-
-    client.on('close', function() {
-      log('TCP socket closed')
+    re = reconnect({}, function(reconnecClient){
+      client = reconnecClient;
     })
-
-    client.on('error', function(err) {
+    .on('connect', function(){
+      log('TCP socket connected')
+    })
+    .on('reconnect', function(n, delay){
+      log('Reconnecting for the '+n+'th time with a delay of '+delay+'ms')
+    })
+    .on('disconnect', function() {
+      log('TCP socket disconnected')
+    })
+    .on('error', function(err) {
       log('TCP socket error: '+ err)
     })
+    .connect(options);
 
     log('Creating new Graphite TCP client')
   }
 
   function close() {
-    client.close()
+    re.disconnect()
     clearInterval(id)
   }
 
@@ -88,6 +95,9 @@ function Client(options) {
     if(Object.keys(queue).length === 0)
       return //log('Queue is empty. Nothing to send')
 
+    if (!re.connected) {
+      return//socket is not connected, skip this interval
+    }
     var metrics = new Buffer(getQueue())
 
     log('Sending '+ Object.keys(queue).length +' metrics to '
