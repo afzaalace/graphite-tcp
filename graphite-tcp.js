@@ -109,7 +109,7 @@ function Client(options) {
 
   function log(line) {
     if(options.verbose)
-      console.log('[graphite-tco]', line)
+      console.log('[graphite-tcp]', line)
   }
 
   return init()
