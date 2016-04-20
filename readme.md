@@ -1,20 +1,19 @@
-# Graphite UDP
+# Graphite TCP
 
-Graphite UDP client for Node.js
+Graphite TCP client for Node.js
 
-* UDP for maximum performance
 * Uses the plaintext Graphite protocol
 * Group values for a configurable interval and send 1 request
 * No other module dependencies
 
 ## Install
 ```
-npm install graphite-udp
+npm install graphite-tcp
 ```
 
 ## Usage
 ```js
-var graphite = require('graphite-udp')
+var graphite = require('graphite-tcp')
 var metric = graphite.createClient([options])
 metric.add(name, value)
 metric.put(name, value)
@@ -25,8 +24,8 @@ metric.put(name, value)
 ```js
 {
   host: '127.0.0.1', // graphite server host or ip
-  port: 2003, // graphite server udp port
-  type: 'udp4', // udp type (udp4 or udp6)
+  port: 2003, // graphite server tcp port
+  family: '4', // TCP family
   prefix: '', // a prefix to prepend to the name of all metrics
   suffix: '', // a suffix to append to the name of all metrics
   verbose: false, // log messages to console
@@ -35,18 +34,10 @@ metric.put(name, value)
 }
 ```
 
-Note that UDP is connection-less protocol. Many errors (connection errors)
-won't emit or throw (except DNS lookups) so make sure your `host`, `port` and
-`type` are correct.
-
-Also make sure your Carbon is listening for UDP connections on carbon.conf
-
-`ENABLE_UDP_LISTENER = True # default for version 0.9.10 of Graphite is False`
-
 ## Example
 ```js
 var os = require('os')
-var graphite = require('graphite-udp')
+var graphite = require('graphite-tcp')
 var metric = graphite.createClient({
   prefix: 'productname',
   suffix: os.hostname(),
@@ -110,3 +101,4 @@ metric.close()
 ## License
 
 Licensed under the MIT license.
+Credit to @fermads for his graphite-udp repo

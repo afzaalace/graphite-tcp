@@ -1,4 +1,4 @@
-var dgram = require('dgram')
+var net= require('net')
 var util = require('util')
 
 function Client(options) {
@@ -8,7 +8,7 @@ function Client(options) {
   var defaults = {
     host: '127.0.0.1',
     port: 2003,
-    type: 'udp4',
+    family: '4',
     prefix: '',
     suffix: '',
     verbose: false,
@@ -32,17 +32,17 @@ function Client(options) {
   }
 
   function createClient() {
-    client = dgram.createSocket(options.type)
+    client = net.createConnection(options)
 
     client.on('close', function() {
-      log('UDP socket closed')
+      log('TCP socket closed')
     })
 
     client.on('error', function(err) {
-      log('UDP socket error: '+ err)
+      log('TCP socket error: '+ err)
     })
 
-    log('Creating new Graphite UDP client')
+    log('Creating new Graphite TCP client')
   }
 
   function close() {
@@ -93,7 +93,7 @@ function Client(options) {
     log('Sending '+ Object.keys(queue).length +' metrics to '
       + options.host +':'+ options.port)
 
-    client.send(metrics, 0, metrics.length, options.port, options.host,
+    client.write(metrics,
       function(err) {
       if(err)
         return log('Error sending metrics: '+ err)
@@ -109,7 +109,7 @@ function Client(options) {
 
   function log(line) {
     if(options.verbose)
-      console.log('[graphite-udp]', line)
+      console.log('[graphite-tco]', line)
   }
 
   return init()

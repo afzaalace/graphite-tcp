@@ -1,23 +1,23 @@
 {
-  "name": "graphite-udp",
-  "description": "Graphite UDP client for Node.js",
+  "name": "graphite-tcp",
+  "description": "Graphite TCP client for Node.js",
   "version": "1.0.0",
-  "main": "graphite-udp.js",
+  "main": "graphite-tcp.js",
   "author": "fermads",
-  "homepage": "https://github.com/fermads/graphite-udp",
+  "homepage": "https://github.com/itamarwe/graphite-tcp",
   "scripts": {
     "test": "cd test && node ."
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/fermads/graphite-udp.git"
+    "url": "git://github.com/itamar/graphite-tcp.git"
   },
   "keywords": [
     "graphite",
-    "udp"
+    "tcp"
   ],
   "bugs": {
-    "url": "https://github.com/fermads/graphite-udp/issues"
+    "url": "https://github.com/itamarwe/graphite-tcp/issues"
   },
   "engines": {
     "node": ">=0.8.0"
