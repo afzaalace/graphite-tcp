@@ -36,20 +36,20 @@ function Client(options) {
       client = reconnecClient;
     })
     .on('connect', function(){
-      log('TCP socket connected')
+      log('TCP socket connected to ' + options.host)
     })
     .on('reconnect', function(n, delay){
-      log('Reconnecting for the '+n+'th time with a delay of '+delay+'ms')
+      log('Reconnecting to ' + options.host + ' for the '+n+'th time with a delay of ' + delay + 'ms')
     })
     .on('disconnect', function() {
-      log('TCP socket disconnected')
+      log('TCP socket disconnected from ' + options.host)
     })
     .on('error', function(err) {
       log('TCP socket error: '+ err)
     })
     .connect(options);
 
-    log('Creating new Graphite TCP client')
+    log('Creating new Graphite TCP client to ' + options.host)
   }
 
   function close() {
