@@ -97,7 +97,7 @@ function Client(options) {
     var text = ''
 
     for(var name in queue) {
-      text += name +' '+ queue[name].value +' '+ queue[name].timestamp +'\n'
+      text += queue[name].key +' '+ queue[name].value +' '+ queue[name].timestamp +'\n'
     }
 
     return text
