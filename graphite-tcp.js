@@ -86,7 +86,7 @@ function Client(options) {
     else
       queue[keyname].value += value
 
-    queue[keyname].key = keyname
+    queue[keyname].key = name
 
     queue[keyname].timestamp = (typeof ts == "undefined") ? String(Date.now()).substr(0, 10) : ts
 
