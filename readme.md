@@ -17,6 +17,7 @@ var graphite = require('graphite-tcp')
 var metric = graphite.createClient([options])
 metric.add(name, value)
 metric.put(name, value)
+metric.put(name, value, unixtimestamp)
 ```
 
 `options` is an object with the following defaults:
@@ -52,6 +53,7 @@ metric.add('my.test.metric1', 10) // add 10
 metric.add('my.test.metric1', 20) // add 20 (previous 10 + 20 = 30)
 metric.put('my.test.metric2', 1) // put 1
 metric.put('my.test.metric2', 5) // put 5 (overwrite 1 with 5)
+metric.put('my.test.metric2', 1, 1488400110) // put 5 at time 1488400110
 ```
 
 Will generate

@@ -57,11 +57,19 @@ function Client(options) {
     clearInterval(id)
   }
 
-  function put(name, value) {
+  function put(name, value, ts) {
+	if(typeof ts == "string" && ts.length == 10)
+      return add(name, value, true, ts)
+
     add(name, value, true)
   }
 
-  function add(name, value, replace) {
+  function add(name, value, replace, ts) {
+    if(typeof ts != "string" || ts.length != 10)
+      ts = undefined
+
+    var keyname = name
+
     if(!name || isNaN(parseFloat(value)) || value === Infinity)
       return log('Skipping invalid name/value: '+ name +' '+ value)
 
@@ -71,12 +79,16 @@ function Client(options) {
     if(options.suffix)
       name = name +'.'+ options.suffix
 
-    if(queue[name] === undefined || replace)
-      queue[name] = { value: value }
-    else
-      queue[name].value += value
+    var keyname = (typeof ts == "undefined") ? name : (name + ts)
 
-    queue[name].timestamp = String(Date.now()).substr(0, 10)
+    if(queue[keyname] === undefined || replace)
+      queue[keyname] = { value: value }
+    else
+      queue[keyname].value += value
+
+    queue[keyname].key = keyname
+
+    queue[keyname].timestamp = (typeof ts == "undefined") ? String(Date.now()).substr(0, 10) : ts
 
     log('Adding metric to queue: '+ name +' '+ value)
   }
